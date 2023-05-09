@@ -34,7 +34,7 @@ def openWinAutoGenQR():
      scetch, scetchPIL = PhotoManipulating.load_photo_2variants(scetchPath)
      PhotoManipulating.crop_image(photo, photoPIL, 'photo')
      PhotoManipulating.crop_image(scetch, scetchPIL, 'scetch')
-     photo = PhotoManipulating.load_photo('cropped_image.jpg')
+     photo = PhotoManipulating.load_photo('cropped_photo.jpg')
      #photo = cv2.resize(photo, (177, 177))
      gr_photo = PhotoManipulating.cvt_to_gray(photo)
 
