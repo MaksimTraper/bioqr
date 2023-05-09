@@ -29,12 +29,17 @@ def openStartWindow():
      return None
 
 def openWinAutoGenQR():
+     photoPath, scetchPath = PhotoManipulating.loadPhotoPath()
+     photo, photoPIL = PhotoManipulating.load_photo_2variants(photoPath)
+     scetch, scetchPIL = PhotoManipulating.load_photo_2variants(scetchPath)
+     PhotoManipulating.crop_image(photo, photoPIL, 'photo')
+     PhotoManipulating.crop_image(scetch, scetchPIL, 'scetch')
      photo = PhotoManipulating.load_photo('cropped_image.jpg')
-     photo = cv2.resize(photo, (177, 177))
+     #photo = cv2.resize(photo, (177, 177))
      gr_photo = PhotoManipulating.cvt_to_gray(photo)
 
      scetch = PhotoManipulating.load_photo('cropped_scetch.jpg')
-     scetch = cv2.resize(scetch, (177, 177))
+     #scetch = cv2.resize(scetch, (177, 177))
 
      detector = dlib.get_frontal_face_detector()
      faces = detector(gr_photo)
@@ -131,6 +136,11 @@ def openWinManualGenQR():
      return None
 
 def genManualQR():
+     photoPath, scetchPath = PhotoManipulating.loadPhotoPath()
+     photo, photoPIL = PhotoManipulating.load_photo_2variants(photoPath)
+     scetch, scetchPIL = PhotoManipulating.load_photo_2variants(photoPath)
+     PhotoManipulating.crop_image(photo, photoPIL, 'photo')
+     PhotoManipulating.crop_image(scetch, scetchPIL, 'scetch')
      photo = PhotoManipulating.load_photo('cropped_image.jpg')
      photo = cv2.resize(photo, (177, 177))
      gr_photo = PhotoManipulating.cvt_to_gray(photo)

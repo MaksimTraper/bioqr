@@ -65,6 +65,22 @@ class GeneratorQRCodes:
         PHENO_QR.add_data(self.pheno)
         PHENO_QR.make(fit=True)
 
+        #Алгоритм увеличения разрешения каждого QR-кода >200 на 200
+        #QRs = [INFO_QR, ANTRO_QR, PHENO_QR]
+        #for i in range(0, 3, 1):
+        #    resolution = (17 + 4*QRs[i].version + QRs[i].border*2)*QRs[i].box_size
+        #    add = 0
+        #    while(resolution<200):
+        #        add += 1
+        #        resolution = (17 + 4*QRs[i].version + QRs[i].border*2)*(QRs[i].box_size+add)
+        #    QRs[i].box_size += add-1
+        #    resolution = (17 + 4 * QRs[i].version + QRs[i].border*2) * QRs[i].box_size
+        #    add = 0
+        #    while(resolution<200):
+        #        add += 1
+        #        resolution = (17 + 4 * QRs[i].version + (QRs[i].border+add)*2) * QRs[i].box_size
+        #    QRs[i].border += add
+
         Img_INFO_QR = INFO_QR.make_image()
         Img_INFO_QR.save('INFO_QR.jpg')
         Img_ANTRO_QR = ANTRO_QR.make_image()
@@ -78,17 +94,37 @@ class GeneratorQRCodes:
         Img_INFO_QR = cv2.imread('INFO_QR.jpg')
         Img_PHENO_QR = cv2.imread('PHENO_QR.jpg')
 
-        gr_Img_ANTRO_QR = cv2.cvtColor(Img_ANTRO_QR, cv2.COLOR_BGR2GRAY)
-        gr_Img_INFO_QR = cv2.cvtColor(Img_INFO_QR, cv2.COLOR_BGR2GRAY)
-        gr_Img_PHENO_QR = cv2.cvtColor(Img_PHENO_QR, cv2.COLOR_BGR2GRAY)
-        self.gr_Img_ANTRO_QR = cv2.resize(gr_Img_ANTRO_QR, (177, 177))
-        self.gr_Img_INFO_QR = cv2.resize(gr_Img_INFO_QR, (177, 177))
-        self.gr_Img_PHENO_QR = cv2.resize(gr_Img_PHENO_QR, (177, 177))
+        Img_ANTRO_QR = cv2.resize(Img_ANTRO_QR, (200, 200))
+        Img_INFO_QR = cv2.resize(Img_INFO_QR, (200, 200))
+        Img_PHENO_QR = cv2.resize(Img_PHENO_QR, (200, 200))
+
+        #Алгоритм доведения разрешения каждого QR-кода до разрешения 200 на 200
+        #Обрезаются белые поля
+        #Img_ANTRO_QR = np.array(Img_ANTRO_QR)
+        #Img_INFO_QR = np.array(Img_INFO_QR)
+        #Img_PHENO_QR = np.array(Img_PHENO_QR)
+
+        #QRs = [Img_INFO_QR, Img_ANTRO_QR, Img_PHENO_QR]
+        #for i in range (0, 3, 1):
+        #    rows, cols, layers = QRs[i].shape
+        #    while(rows > 200):
+        #        if (rows%2!= 0):
+        #            QRs[i] = np.delete(QRs[i], 0, 0)
+        #            QRs[i] = np.delete(QRs[i], 0, 1)
+        #            rows, cols, layers = QRs[i].shape
+        #Img_INFO_QR = QRs[0]
+        #Img_ANTRO_QR = QRs[1]
+        #Img_PHENO_QR = QRs[2]
+
+        self.gr_Img_ANTRO_QR = cv2.cvtColor(Img_ANTRO_QR, cv2.COLOR_BGR2GRAY)
+        self.gr_Img_INFO_QR = cv2.cvtColor(Img_INFO_QR, cv2.COLOR_BGR2GRAY)
+        self.gr_Img_PHENO_QR = cv2.cvtColor(Img_PHENO_QR, cv2.COLOR_BGR2GRAY)
         return None
 
     def genBIOQRCodes(self, nameOnRed, nameOnGreen, nameOnBlue):
         namesVariables=['Antro', 'Info', 'Pheno', 'Photo', 'Scetch']
         namesParameters = [nameOnRed, nameOnGreen, nameOnBlue]
+        #Заполняем массив фиктивными переменными. В последствии, часть из них будут заменены
         parameters = [self.grPhoto, self.grPhoto, self.grPhoto]
         for y in range(0,3,1):
             match namesParameters[y]:
