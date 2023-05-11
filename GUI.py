@@ -30,10 +30,10 @@ def openStartWindow():
 
 def openWinAutoGenQR():
      photoPath, scetchPath = PhotoManipulating.loadPhotoPath()
-     photo, photoPIL = PhotoManipulating.load_photo_2variants(photoPath)
-     scetch, scetchPIL = PhotoManipulating.load_photo_2variants(scetchPath)
-     PhotoManipulating.crop_image(photo, photoPIL, 'photo')
-     PhotoManipulating.crop_image(scetch, scetchPIL, 'scetch')
+     oldphoto, photoPIL = PhotoManipulating.load_photo_2variants(photoPath)
+     oldscetch, scetchPIL = PhotoManipulating.load_photo_2variants(scetchPath)
+     PhotoManipulating.crop_image(oldphoto, photoPIL, 'photo')
+     PhotoManipulating.crop_image(oldscetch, scetchPIL, 'scetch')
      photo = PhotoManipulating.load_photo('cropped_photo.jpg')
      #photo = cv2.resize(photo, (177, 177))
      gr_photo = PhotoManipulating.cvt_to_gray(photo)
@@ -61,21 +61,21 @@ def openWinAutoGenQR():
      BioQRCode4 = generator.genBIOQRCodes('Photo', 'Antro', 'Pheno')
      BioQRCode5 = generator.genBIOQRCodes('Photo', 'Info', 'Pheno')
      BioQRCode6 = generator.genBIOQRCodes('Photo', 'Scetch', 'Pheno')
-     QRCodes = [BioQRCode1, BioQRCode2, BioQRCode3, BioQRCode4, BioQRCode5, BioQRCode6]
-     names = ['PIA (Photo/Info/Antro)', 'PIP (Photo/Info/Photo)', 'PIS (Photo/Info/Scetch)',
+     QRCodes = [oldphoto, photo, BioQRCode1, BioQRCode2, BioQRCode3, oldscetch, scetch, BioQRCode4, BioQRCode5, BioQRCode6]
+     names = ['Исходная фотография', 'Обрезанная фотография', 'PIA (Photo/Info/Antro)', 'PIP (Photo/Info/Photo)', 'PIS (Photo/Info/Scetch)', 'Скетч', 'Обрезанный скетч',
               'PAPh (Photo/Antro/Pheno)', 'PIPh (Photo/Info/Pheno)', 'PSPh (Photo/Scetch/Pheno)']
 
-     pic_box=plt.figure(num="Автоматическая генерация BIO QR-codes", figsize=(8, 6), dpi=80)
+     pic_box=plt.figure(num="Автоматическая генерация BIO QR-codes", figsize=(14, 8), dpi=80)
 
      #Сохранение QR-кодов в директорию проекта
      #for i in range(1,7,1):
           #filename = 'BioQRCode' + str(i) + '.jpg'
           #cv2.imwrite(filename, QRCodes[i-1])
 
-     for i in range(1, 7, 1):
+     for i in range(1, 11, 1):
           #filename = 'BioQRCode' + str(i) + '.jpg'
           #image = plt.imread(filename)
-          plt.subplot(2, 3, i)
+          plt.subplot(2, 5, i)
           plt.imshow(QRCodes[i-1])
           plt.title(names[i-1])
           plt.axis('off')
@@ -141,12 +141,12 @@ def genManualQR():
      scetch, scetchPIL = PhotoManipulating.load_photo_2variants(photoPath)
      PhotoManipulating.crop_image(photo, photoPIL, 'photo')
      PhotoManipulating.crop_image(scetch, scetchPIL, 'scetch')
-     photo = PhotoManipulating.load_photo('cropped_image.jpg')
-     photo = cv2.resize(photo, (177, 177))
+     photo = PhotoManipulating.load_photo('cropped_photo.jpg')
+     #photo = cv2.resize(photo, (177, 177))
      gr_photo = PhotoManipulating.cvt_to_gray(photo)
 
      scetch = PhotoManipulating.load_photo('cropped_scetch.jpg')
-     scetch = cv2.resize(scetch, (177, 177))
+     #scetch = cv2.resize(scetch, (177, 177))
 
      detector = dlib.get_frontal_face_detector()
      faces = detector(gr_photo)

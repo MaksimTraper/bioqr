@@ -22,11 +22,13 @@ def load_photo_2variants(name):
     root_proj = os.getcwd()
     rel_path = os.path.relpath(name, root_proj)
     photo = cv2.imread(rel_path)
+    photo = cv2.cvtColor(photo, cv2.COLOR_RGB2BGR)
     photoPIL = Image.open(pathlib.Path(name))
     return photo, photoPIL
 
 def load_photo(name):
     photo = cv2.imread(name)
+    photo = cv2.cvtColor(photo, cv2.COLOR_RGB2BGR)
     return photo
 
 def cvt_to_gray(photo):
@@ -43,9 +45,9 @@ def crop_image(photo, photoPIL, name):
     height = face.bottom() - face.top()
     differ = 200 - width
     right = face.right() + differ / 2
-    top = face.top() - differ
+    top = face.top() - differ / 6 * 3
     left = face.left() - differ / 2
-    bottom = face.bottom()
+    bottom = face.bottom() + differ / 6
     while ((right - left) != 200 or (bottom - top) != 200):
         if ((right - left) != 200):
             if (right - left) > 200:
